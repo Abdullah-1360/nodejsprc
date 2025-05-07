@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const MONGO_URI = 'mongodb+srv://text_stegano:pass123@cluster0.zhfof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Replace with MongoDB Atlas URI
+const MONGO_URI = 'mongodb+srv://text_stegano:text_stegano@cluster0.zhfof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Replace with MongoDB Atlas URI
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -53,8 +53,8 @@ function decodeFromWhitespace(whitespace) {
 // Save encoded message
 app.post('/encode', async (req, res) => {
   try {
-    const { message, password } = req.body;
-    const encoded = encodeToWhitespace(message);
+    const { text, password } = req.body;
+    const encoded = encodeToWhitespace(text);
     const id = Date.now().toString(); // Generate a unique ID for the message
     const newMessage = new Message({ id, password, encoded });
     await newMessage.save();
@@ -66,18 +66,19 @@ app.post('/encode', async (req, res) => {
 });
 
 // Retrieve and decode message
-app.post('/decode', async (req, res) => {
-  try {
-    const { id, password } = req.body;
-    const doc = await Message.findOne({ id, password });
-    if (!doc) return res.status(404).json({ error: 'Message not found' });
-    const decoded = decodeFromWhitespace(doc.encoded);
-    res.json({ message: decoded });
-  } catch (error) {
-    console.error('Error decoding message:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+app.get('/decode', async (req, res) => {
+    try {
+      const { id, password } = req.query;
+      const doc = await Message.findOne({ id, password });
+      if (!doc) return res.status(404).json({ error: 'Message not found' });
+      const decoded = decodeFromWhitespace(doc.encoded);
+      res.json({ text: decoded }); // match Flutter expectations
+    } catch (error) {
+      console.error('Error decoding message:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
