@@ -24,7 +24,7 @@ const Message = mongoose.model('Message', messageSchema);
 // Connect to MongoDB using Mongoose
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log("MongoDB connected");
+    return "MongoDB connected";
   })
   .catch(err => {
     console.error("MongoDB connection error:", err);
