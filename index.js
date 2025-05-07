@@ -51,7 +51,7 @@ function decodeFromWhitespace(whitespace) {
 }
 
 // Save encoded message
-app.get('/encode', async (req, res) => {
+app.post('/encode', async (req, res) => {
   try {
     const { text, password } = req.body;
     const encoded = encodeToWhitespace(text);
