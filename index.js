@@ -51,7 +51,7 @@ function decodeFromWhitespace(whitespace) {
 }
 
 // Save encoded message
-app.post('/encode', async (req, res) => {
+app.get('/encode', async (req, res) => {
   try {
     const { message, password } = req.body;
     const encoded = encodeToWhitespace(message);
@@ -66,7 +66,7 @@ app.post('/encode', async (req, res) => {
 });
 
 // Retrieve and decode message
-app.post('/decode', async (req, res) => {
+app.get('/decode', async (req, res) => {
   try {
     const { id, password } = req.body;
     const doc = await Message.findOne({ id, password });
