@@ -24,7 +24,7 @@ const Message = mongoose.model('Message', messageSchema);
 // Connect to MongoDB using Mongoose
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    return "MongoDB connected";
+ console.log( "MongoDB connected");
   })
   .catch(err => {
     console.error("MongoDB connection error:", err);
@@ -51,7 +51,7 @@ function decodeFromWhitespace(whitespace) {
 }
 
 // Save encoded message
-app.post('/encode', async (req, res) => {
+app.get('/encode', async (req, res) => {
   try {
     const { text, password } = req.body;
     const encoded = encodeToWhitespace(text);
