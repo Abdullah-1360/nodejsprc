@@ -49,7 +49,10 @@ function decodeFromWhitespace(whitespace) {
   }
   return text;
 }
-
+app.post('/',(req,res)=>{
+  console.log("helo");
+  res.send("Hello");
+}
 // Save encoded message
 app.post('/encode', async (req, res) => {
   try {
